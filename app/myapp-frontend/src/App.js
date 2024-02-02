@@ -36,7 +36,7 @@ const App = () => {
         </div>
       </nav>
 
-      <h1 className="mt-3"> Reportes X </h1>
+      <h1 className="mt-3"> Reportes Generales  </h1>
 
       <button className="btn btn-success" onClick={() => setModalShow(true)}>
         Reportes Azen

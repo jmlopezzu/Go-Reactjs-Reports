@@ -22,7 +22,12 @@ type Report struct {
 
 var reports []Report
 
+
+
+
+
 func main() {
+
 	gofakeit.Seed(0)
 
 	r := mux.NewRouter()
@@ -30,8 +35,7 @@ func main() {
 	r.HandleFunc("/api/reports", getReports).Methods("GET")
 	r.HandleFunc("/api/reports", createReport).Methods("POST")
 	r.HandleFunc("/api/reports/html", getHTMLReports).Methods("GET")
-
-	//curl -X POST http://localhost:8080/api/reports
+	r.HandleFunc("/api/reports/{id}", getReport).Methods("GET")  // New route for fetching a specific report
 
 	headers := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
 	methods := handlers.AllowedMethods([]string{"GET", "POST", "OPTIONS"})
@@ -41,10 +45,19 @@ func main() {
 	http.ListenAndServe(":8080", nil)
 }
 
+
+
+
+
+
 func getReports(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(reports)
 }
+
+
+
+
 
 func createReport(w http.ResponseWriter, r *http.Request) {
 	var report Report
@@ -135,3 +148,25 @@ func getHTMLReports(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+func getReport(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	reportID := params["id"]
+	log.Println("Requested Report ID:", reportID)
+
+	// Find the report with the specified ID
+	for _, report := range reports {
+			// Print each report ID in the list
+			log.Println("Report ID in List:", report.ID)
+
+			if report.ID == reportID {
+					w.Header().Set("Content-Type", "application/json")
+					json.NewEncoder(w).Encode(report)
+					return
+			}
+	}
+
+	// Report not found
+	http.NotFound(w, r)
+}
+

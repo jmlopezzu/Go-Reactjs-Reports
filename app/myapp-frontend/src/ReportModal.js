@@ -19,6 +19,20 @@ const ReportModal = ({ reports, show, handleClose, handleReportClick }) => {
             </button>
           </div>
           <div className="modal-body">
+          
+          
+          {selectedReport && (
+              <div>
+                <h1>Reportes Especificos </h1>
+                <br></br>
+                <h3>ID Cliente: {selectedReport.id}</h3>
+                <br></br>
+                <p>Detalle : {selectedReport.content}</p>
+              </div>
+            )}
+
+
+
             {reports?.length > 0 ? (
               <ul className="list-group">
                 {reports.map(({ id, content }) => (
@@ -34,13 +48,7 @@ const ReportModal = ({ reports, show, handleClose, handleReportClick }) => {
             )}
 
             {/* Display detailed information if a report is selected */}
-            {selectedReport && (
-              <div>
-                <h3>Selected Report ID: {selectedReport.id}</h3>
-                <p>Content: {selectedReport.content}</p>
-                {/* Add more details as needed */}
-              </div>
-            )}
+            
           </div>
         </div>
       </div>
